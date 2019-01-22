@@ -90,6 +90,7 @@ public class CourseService {
         } catch (ResultNotFoundException ex) {
             //TODO log here
         }
+        System.out.println(courses);
         return courses.stream().map(CourseMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
 

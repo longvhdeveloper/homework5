@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StudentDTO {
     private String id;
-    private String name;
+    private String fullname;
     private Gender gender;
     private String dateOfBirth;
     private CourseDTO courseDTO;
 
     @Override
     public String toString() {
-        return "StudentDTO{" + "id=" + id + ", name=" + name + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", course=" + courseDTO + '}';
+        return "StudentDTO{" + "id=" + id + ", name=" + fullname + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", course=" + courseDTO + '}';
     }
-    
-    
+
+
 }

@@ -8,7 +8,7 @@ public enum Gender {
         this.code = code;
     }
 
-    public static Gender valueOf(int code) {
+    public static Gender map(int code) {
         switch (code) {
             case 1:
                 return MALE;
