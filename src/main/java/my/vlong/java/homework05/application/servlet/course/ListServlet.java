@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import my.vlong.java.homework05.domain.dto.CourseDTO;
 import my.vlong.java.homework05.domain.service.CourseService;
 
-@WebServlet(value = "/courses", name = "listServlet")
+@WebServlet(value = "/courses", name = "courseListServlet")
 public class ListServlet extends HttpServlet {
 
     private final CourseService courseService;

@@ -14,16 +14,18 @@
         <title>List Course</title>
     </head>
     <body>
-        <h1>List Course</h1>
+        <div class="row" style="margin-left: 10px;">
+            <h1>List Course</h1>
+            <div class="col-md-9">
 
-        <a class="btn btn-primary right">Add course</a>
+                <a href="/course/add" class="btn btn-success" style="float:right; margin-right: 10px;">Add course</a>
 
-        <%
+                <%
                     List<CourseDTO> courses = (ArrayList<CourseDTO>) request.getAttribute("courses");
                     if (courses.isEmpty()) { %>
-                    No have data
+                No have data
                 %>
-                 <%
+                <%
                 } else {
                 %>
                 <table class="table table-hover">
@@ -32,6 +34,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
                             <th>Number of students</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,12 +45,16 @@
                             <td><%= courseDTO.getId()%></td>
                             <td><%= courseDTO.getName()%></td>
                             <td><%
-                            if (courseDTO.getStudentDTOs() != null) {
-                                out.write(courseDTO.getStudentDTOs().size());
-                            } else {
-                                out.write("0");
-                            }
-                            %></td>
+                            if (courseDTO.getStudentDTOs() != null && !courseDTO.getStudentDTOs().isEmpty()) {%>
+                                <span class="label label-success"><%= courseDTO.getStudentDTOs().size()%></span>
+                                <% } else { %>
+                                <span class="label label-default">0</span>
+                                <%}
+                                %></td>
+                            <td>
+                                <a class="btn btn-primary" href="/course/update?id=<%=courseDTO.getId()%>">Edit</a>
+                                <a class="btn btn-danger" href="/course/delete?id=<%=courseDTO.getId()%>">Delete</a>
+                            </td>
                         </tr>
                         <%
                             }
@@ -56,9 +63,11 @@
                 </table>
                 <%}
                 %>
-
+            </div>
+        </div>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     </body>
 </html>

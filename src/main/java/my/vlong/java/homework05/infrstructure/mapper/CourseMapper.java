@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = DateMapper.class)
+@Mapper(uses = StudentMapper.class)
 public interface CourseMapper extends IMapper<Course, CourseDTO> {
 
     CourseMapper INSTANCE = Mappers.getMapper(CourseMapper.class);
