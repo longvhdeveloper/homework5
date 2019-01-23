@@ -1,7 +1,7 @@
 <%@page import="my.vlong.java.homework05.domain.dto.CourseDTO"%>
-<%        
-    CourseDTO courseDTO = (CourseDTO) request.getAttribute("courseDTO");    
-    String name = courseDTO != null ? courseDTO.getName() : request.getParameter("name");
+<%
+    CourseDTO courseDTO = (CourseDTO) request.getAttribute("courseDTO");
+    String name = courseDTO.getName() != null ? courseDTO.getName() : "";
 %>
 <div class="form-group">
     <label for="name">Course Name</label>

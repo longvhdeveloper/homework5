@@ -13,21 +13,7 @@
         <div class="row" style="margin-left: 10px;">
             <h1>Add Course</h1>            
             <div class="col-md-9">
-                <%
-                    if (request.getAttribute("success") != null && (boolean) request.getAttribute("success") == true) {
-                %>
-                <div class="alert alert-success" role="alert"><%=request.getAttribute("message")%></div>
-                <%
-                    }
-                %>
-
-                <%
-                    if (request.getAttribute("error") != null && (boolean) request.getAttribute("error") == true) {
-                %>
-                <div class="alert alert-danger" role="alert"><%=request.getAttribute("message")%></div>
-                <%
-                    }
-                %>
+                <jsp:include page="_message.jsp"></jsp:include>
                 <form method="POST" action="/course/add">
                     <jsp:include page="_form.jsp"></jsp:include>
                 </form>

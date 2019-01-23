@@ -16,22 +16,10 @@
             <div class="col-md-9">
                 <%
                     int id = (int) request.getAttribute("id");
-                    if (request.getAttribute("success") != null && (boolean) request.getAttribute("success") == true) {
                 %>
-                <div class="alert alert-success" role="alert"><%=request.getAttribute("message")%></div>
-                <%
-                    }
-                %>
-
-                <%
-                    if (request.getAttribute("error") != null && (boolean) request.getAttribute("error") == true) {
-                %>
-                <div class="alert alert-danger" role="alert"><%=request.getAttribute("message")%></div>
-                <%
-                    }
-                %>
-                <form method="POST" action="/course/update">
-                    <input type="hidden" name="id" value="<%=id%>" />
+                <jsp:include page="_message.jsp"></jsp:include>
+                    <form method="POST" action="/course/update">
+                        <input type="hidden" name="id" value="<%=id%>" />
                     <jsp:include page="_form.jsp"></jsp:include>
                 </form>
             </div>

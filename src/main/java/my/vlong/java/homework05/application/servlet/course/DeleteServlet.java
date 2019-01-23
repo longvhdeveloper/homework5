@@ -7,6 +7,8 @@ package my.vlong.java.homework05.application.servlet.course;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,32 +50,21 @@ public class DeleteServlet extends HttpServlet {
 
             boolean isDelete = courseService.delete(id);
             if (isDelete) {
-                request.setAttribute("success", true);
-                request.setAttribute("message", "Delete course success.");
+                request.getSession().setAttribute("success", true);
+                request.getSession().setAttribute("message", "Delete course success.");
             } else {
-                request.setAttribute("error", true);
-                request.setAttribute("message", "Course not found");
+                request.getSession().setAttribute("error", true);
+                request.getSession().setAttribute("message", "Course not found");
             }
 
         } catch (NumberFormatException ex) {
-            request.setAttribute("error", true);
-            request.setAttribute("message", "Course not found");
+            request.getSession().setAttribute("error", true);
+            request.getSession().setAttribute("message", "Course not found");
+        } catch (DeleteException ex) {
+            request.getSession().setAttribute("error", true);
+            request.getSession().setAttribute("message", ex.getMessage());
         }
         response.sendRedirect("/courses");
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
     }
 
 }

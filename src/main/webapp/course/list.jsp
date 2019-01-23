@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="my.vlong.java.homework05.domain.dto.CourseDTO"%>
 <%@page import="java.util.*"%>
 <!doctype html>
@@ -15,43 +16,27 @@
         <div class="row" style="margin-left: 10px;">
             <h1>List Course</h1>
             <div class="col-md-9">
-                <%
-                    if (request.getAttribute("success") != null && (boolean) request.getAttribute("success") == true) {
-                %>
-                <div class="alert alert-success" role="alert"><%=request.getAttribute("message")%></div>
-                <%
-                    }
-                %>
-
-                <%
-                    if (request.getAttribute("error") != null && (boolean) request.getAttribute("error") == true) {
-                %>
-                <div class="alert alert-danger" role="alert"><%=request.getAttribute("message")%></div>
-                <%
-                    }
-                %>
-
-                <div class="row header">         
-                    <div class="col-lg-2" style="float: right;">
-                        <a href="/course/add" class="btn btn-success" style="float:right; margin-right: 10px;">Add course</a>
-                    </div>  
-                    <div class="col-lg-4" style="float: right;">
-                        <form action="/course/search" method="GET">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">Search</button>
-                                </span>
-                            </div><!-- /input-group -->
-                        </form>
-                    </div><!-- /.col-lg-6 -->                                      
-                </div>                
+                <jsp:include page="_message.jsp"></jsp:include>
+                    <div class="row header">         
+                        <div class="col-lg-2" style="float: right;">
+                            <a href="/course/add" class="btn btn-success" style="float:right; margin-right: 10px;">Add course</a>
+                        </div>  
+                        <div class="col-lg-4" style="float: right;">
+                            <form action="/course/search" method="GET">
+                                <div class="input-group">
+                                    <input type="text" name="keyword" class="form-control" placeholder="Search for...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="submit">Search</button>
+                                    </span>
+                                </div><!-- /input-group -->
+                            </form>
+                        </div><!-- /.col-lg-6 -->                                      
+                    </div>                
 
                 <%
                     List<CourseDTO> courses = (ArrayList<CourseDTO>) request.getAttribute("courses");
                     if (courses.isEmpty()) { %>
-                No have data
-                %>
+                <div class="alert alert-warning" role="alert">No have data</div>
                 <%
                 } else {
                 %>

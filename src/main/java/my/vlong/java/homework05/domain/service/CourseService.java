@@ -50,7 +50,7 @@ public class CourseService {
         
         if (!isUpdateValid(courseDTO)) {
             throw new UpdateException("Can not update course");
-        }                
+        }
         
         Course courseUpdate = courseOptional.get();
         courseUpdate.setName(courseDTO.getName());
@@ -73,30 +73,20 @@ public class CourseService {
         return CourseMapper.INSTANCE.toDTO(courseOptional.get());
     }
     
-    public boolean delete(int id) {
+    public boolean delete(int id) throws DeleteException {
         boolean isSucces = false;
         
         if (id == 0) {
             return isSucces;
         }
-        
-        try {
-            isSucces = courseRepository.delete(id);
-        } catch (DeleteException ex) {
-            //TODO log here
-        }
+        isSucces = courseRepository.delete(id);
         
         return isSucces;
     }
     
-    public List<CourseDTO> findAll() {
+    public List<CourseDTO> findAll() throws ResultNotFoundException {
         List<Course> courses = new ArrayList<>();
-        try {
-            courses = courseRepository.findAll();
-        } catch (ResultNotFoundException ex) {
-            //TODO log here
-        }
-        System.out.println(courses);
+        courses = courseRepository.findAll();
         return courses.stream().map(CourseMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
     
@@ -106,7 +96,7 @@ public class CourseService {
             throw new ResultNotFoundException("Result list is empty");
         }
         //return courses.stream().map(courseFactory::toDTO).collect(Collectors.toList());
-        return null;
+        return courses.stream().map(CourseMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
     
     public List<StudentDTO> getStudentOfCourse(int id) throws ResultNotFoundException {

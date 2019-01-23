@@ -28,13 +28,27 @@ public class CourseRepositoryImplDB implements ICourseRepository {
     }
 
     @Override
-    public List<Student> getStudentsOfCourse(Optional<Course> course) {
+    public List<Student> getStudentsOfCourse(Optional<Course> course) throws ResultNotFoundException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Course> findByNameContaining(String keyWord) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Course> findByNameContaining(String keyWord) throws ResultNotFoundException {
+        entityManager = entityManagerFactory.createEntityManager();
+        List<Course> courses = new ArrayList<>();
+        try {
+            courses = entityManager.createQuery("SELECT c FROM Course c WHERE c.name LIKE '%:search%'", Course.class)
+                    .setParameter("search", keyWord).getResultList();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw new ResultNotFoundException(e.getMessage());
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+
+        return courses;
     }
 
     @Override
@@ -42,7 +56,7 @@ public class CourseRepositoryImplDB implements ICourseRepository {
         if (t == null) {
             throw new AddException("Can not add course");
         }
-        
+
         entityManager = entityManagerFactory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
@@ -72,7 +86,7 @@ public class CourseRepositoryImplDB implements ICourseRepository {
             entityManager.getTransaction().commit();
             return Optional.of(t);
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();            
+            entityManager.getTransaction().rollback();
             throw new UpdateException(e.getMessage());
         } finally {
             if (entityManager != null) {

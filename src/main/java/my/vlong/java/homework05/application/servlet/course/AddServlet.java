@@ -44,6 +44,8 @@ public class AddServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        CourseDTO courseDTO = new CourseDTO();
+        request.setAttribute("courseDTO", courseDTO);
         view = request.getRequestDispatcher("/course/add.jsp");
         view.forward(request, response);
     }
@@ -59,20 +61,19 @@ public class AddServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String message = null;        
+        String message = null;
         try {
-            CourseDTO courseDTO = new CourseDTO();            
-            courseDTO.setName(request.getParameter("name"));            
+            CourseDTO courseDTO = new CourseDTO();
+            courseDTO.setName(request.getParameter("name"));
             courseService.add(courseDTO);
-            request.setAttribute("success", true);
+            request.getSession().setAttribute("success", true);
             message = "Add course success.";
         } catch (AddException ex) {
-            request.setAttribute("error", true);
+            request.getSession().setAttribute("error", true);
             message = ex.getMessage();
         }
-        request.setAttribute("message", message);
-        view = request.getRequestDispatcher("/course/add.jsp");
-        view.forward(request, response);
+        request.getSession().setAttribute("message", message);
+        response.sendRedirect("/courses");
     }
 
 }

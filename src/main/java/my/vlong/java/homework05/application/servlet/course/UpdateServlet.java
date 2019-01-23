@@ -49,13 +49,12 @@ public class UpdateServlet extends HttpServlet {
             request.setAttribute("id", id);
             request.setAttribute("courseDTO", courseDTO);
             view = request.getRequestDispatcher("/course/update.jsp");
-
+            view.forward(request, response);
         } catch (NumberFormatException | ResultNotFoundException ex) {
             request.setAttribute("error", true);
             request.setAttribute("message", "Course not found");
             response.sendRedirect("/courses");
         }
-        view.forward(request, response);
     }
 
     /**
@@ -76,18 +75,18 @@ public class UpdateServlet extends HttpServlet {
             CourseDTO courseDTO = new CourseDTO();
             courseDTO.setName(request.getParameter("name"));
             CourseDTO update = courseService.update(id, courseDTO);
-            
+
             request.setAttribute("courseDTO", update);
-            request.setAttribute("success", true);
-            request.setAttribute("message", "Update course success.");
+            request.getSession().setAttribute("success", true);
+            request.getSession().setAttribute("message", "Update course success.");
 
         } catch (NumberFormatException | ResultNotFoundException ex) {
-            request.setAttribute("error", true);
-            request.setAttribute("message", "Course not found");
+            request.getSession().setAttribute("error", true);
+            request.getSession().setAttribute("message", "Course not found");
             response.sendRedirect("/courses");
         } catch (UpdateException ex) {
-            request.setAttribute("error", true);
-            request.setAttribute("message", "Course can not update");
+            request.getSession().setAttribute("error", true);
+            request.getSession().setAttribute("message", "Course can not update");
         }
         request.setAttribute("id", id);
         view = request.getRequestDispatcher("/course/update.jsp");
