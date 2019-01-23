@@ -19,70 +19,76 @@ import my.vlong.java.homework05.infrstructure.mapper.CourseMapper;
 import my.vlong.java.homework05.infrstructure.repository.CourseRepositoryImplDB;
 
 public class CourseService {
-
+    
     private final ICourseRepository courseRepository;
-
+    
     public CourseService() {
         courseRepository = new CourseRepositoryImplDB();
     }
-
+    
     public CourseDTO add(CourseDTO courseDTO) throws AddException {
         if (!isAddValid(courseDTO)) {
-            throw new AddException("Can not add course");
+            throw new AddException("Data of course to add is not valid");
         }
-        //Course course = courseFactory.toEntity(courseDTO);
-        Course course = null;
-
+        Course course = CourseMapper.INSTANCE.toEntity(courseDTO);
+        
         Optional<Course> courseOption = courseRepository.add(course);
-
+        
         if (!courseOption.isPresent()) {
             throw new AddException("Can not add course");
         }
-
-        //return courseFactory.toDTO(courseOption.get());
-        return null;
+        
+        return CourseMapper.INSTANCE.toDTO(courseOption.get());
     }
-
+    
     public CourseDTO update(int id, CourseDTO courseDTO) throws UpdateException, ResultNotFoundException {
         Optional<Course> courseOptional = courseRepository.findByOne(id);
-
+        
         if (!courseOptional.isPresent()) {
             throw new ResultNotFoundException("Course not found");
         }
-
+        
         if (!isUpdateValid(courseDTO)) {
             throw new UpdateException("Can not update course");
-        }
-
+        }                
+        
         Course courseUpdate = courseOptional.get();
         courseUpdate.setName(courseDTO.getName());
-
+        
         Optional<Course> courseOption = courseRepository.update(courseUpdate);
-
+        
         if (!courseOption.isPresent()) {
             throw new UpdateException("Can not update course");
         }
-
-        //return courseFactory.toDTO(courseUpdate);
-        return null;
+        
+        return CourseMapper.INSTANCE.toDTO(courseOption.get());
     }
-
+    
+    public CourseDTO getCourse(int id) throws ResultNotFoundException {
+        Optional<Course> courseOptional = courseRepository.findByOne(id);
+        
+        if (!courseOptional.isPresent()) {
+            throw new ResultNotFoundException("Course not found");
+        }
+        return CourseMapper.INSTANCE.toDTO(courseOptional.get());
+    }
+    
     public boolean delete(int id) {
         boolean isSucces = false;
-
+        
         if (id == 0) {
             return isSucces;
         }
-
+        
         try {
             isSucces = courseRepository.delete(id);
         } catch (DeleteException ex) {
             //TODO log here
         }
-
+        
         return isSucces;
     }
-
+    
     public List<CourseDTO> findAll() {
         List<Course> courses = new ArrayList<>();
         try {
@@ -93,7 +99,7 @@ public class CourseService {
         System.out.println(courses);
         return courses.stream().map(CourseMapper.INSTANCE::toDTO).collect(Collectors.toList());
     }
-
+    
     public List<CourseDTO> search(String keyWord) throws ResultNotFoundException {
         List<Course> courses = courseRepository.findByNameContaining(keyWord);
         if (courses.isEmpty()) {
@@ -102,7 +108,7 @@ public class CourseService {
         //return courses.stream().map(courseFactory::toDTO).collect(Collectors.toList());
         return null;
     }
-
+    
     public List<StudentDTO> getStudentOfCourse(int id) throws ResultNotFoundException {
         Optional<Course> course = courseRepository.findByOne(id);
         List<Student> students = courseRepository.getStudentsOfCourse(course);
@@ -113,32 +119,32 @@ public class CourseService {
         //return students.stream().map(studentFactory::toDTO).collect(Collectors.toList());
         return null;
     }
-
+    
     private boolean isAddValid(CourseDTO courseDTO) {
         if (courseDTO == null) {
             return false;
         }
-
+        
         if (courseDTO.getName() == null) {
             return false;
         }
-
+        
         if (courseDTO.getName().equals("")) {
             return false;
         }
-
+        
         return true;
     }
-
+    
     private boolean isUpdateValid(CourseDTO courseDTO) {
         if (courseDTO == null) {
             return false;
         }
-
+        
         if (courseDTO.getName() == null) {
             return false;
         }
-
+        
         if (courseDTO.getName().equals("")) {
             return false;
         }

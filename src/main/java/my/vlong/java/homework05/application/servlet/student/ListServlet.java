@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(value = "/courses", name = "studentListServlet")
+@WebServlet(value = "/students", name = "studentListServlet")
 public class ListServlet extends HttpServlet {
 
     @Override

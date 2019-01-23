@@ -23,9 +23,7 @@ public class ListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<CourseDTO> courses = courseService.findAll();
-        System.out.println("XXXXXXXXX");
-        System.out.println(courses);
+        List<CourseDTO> courses = courseService.findAll();                
         req.setAttribute("courses", courses);
         view = req.getRequestDispatcher("course/list.jsp");
 

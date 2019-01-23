@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.transaction.Transactional;
 import my.vlong.java.homework05.application.exception.AddException;
 import my.vlong.java.homework05.application.exception.DeleteException;
 import my.vlong.java.homework05.application.exception.ResultNotFoundException;
@@ -16,6 +17,7 @@ import my.vlong.java.homework05.domain.repository.ICourseRepository;
 import my.vlong.java.homework05.infrstructure.entity.Course;
 import my.vlong.java.homework05.infrstructure.entity.Student;
 
+@Transactional
 public class CourseRepositoryImplDB implements ICourseRepository {
 
     private EntityManager entityManager;
@@ -40,6 +42,7 @@ public class CourseRepositoryImplDB implements ICourseRepository {
         if (t == null) {
             throw new AddException("Can not add course");
         }
+        
         entityManager = entityManagerFactory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
@@ -62,13 +65,14 @@ public class CourseRepositoryImplDB implements ICourseRepository {
             throw new UpdateException("Can not update course");
         }
 
+        entityManager = entityManagerFactory.createEntityManager();
         try {
             entityManager.getTransaction().begin();
             entityManager.merge(t);
             entityManager.getTransaction().commit();
             return Optional.of(t);
         } catch (Exception e) {
-            entityManager.getTransaction().rollback();
+            entityManager.getTransaction().rollback();            
             throw new UpdateException(e.getMessage());
         } finally {
             if (entityManager != null) {
@@ -89,7 +93,9 @@ public class CourseRepositoryImplDB implements ICourseRepository {
             entityManager.getTransaction().rollback();
             throw new DeleteException(e.getMessage());
         } finally {
-
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
         return true;
     }
@@ -103,7 +109,9 @@ public class CourseRepositoryImplDB implements ICourseRepository {
         } catch (Exception e) {
             throw new ResultNotFoundException(e.getMessage());
         } finally {
-
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
         return Optional.ofNullable(course);
     }
@@ -121,7 +129,9 @@ public class CourseRepositoryImplDB implements ICourseRepository {
         } catch (Exception e) {
             throw new ResultNotFoundException(e.getMessage());
         } finally {
-
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
 
         return courses;

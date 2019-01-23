@@ -9,16 +9,43 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-
-        <title>List Course</title>
+        <title>Course</title>
     </head>
     <body>
         <div class="row" style="margin-left: 10px;">
             <h1>List Course</h1>
             <div class="col-md-9">
+                <%
+                    if (request.getAttribute("success") != null && (boolean) request.getAttribute("success") == true) {
+                %>
+                <div class="alert alert-success" role="alert"><%=request.getAttribute("message")%></div>
+                <%
+                    }
+                %>
 
-                <a href="/course/add" class="btn btn-success" style="float:right; margin-right: 10px;">Add course</a>
+                <%
+                    if (request.getAttribute("error") != null && (boolean) request.getAttribute("error") == true) {
+                %>
+                <div class="alert alert-danger" role="alert"><%=request.getAttribute("message")%></div>
+                <%
+                    }
+                %>
+
+                <div class="row header">         
+                    <div class="col-lg-2" style="float: right;">
+                        <a href="/course/add" class="btn btn-success" style="float:right; margin-right: 10px;">Add course</a>
+                    </div>  
+                    <div class="col-lg-4" style="float: right;">
+                        <form action="/course/search" method="GET">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">Search</button>
+                                </span>
+                            </div><!-- /input-group -->
+                        </form>
+                    </div><!-- /.col-lg-6 -->                                      
+                </div>                
 
                 <%
                     List<CourseDTO> courses = (ArrayList<CourseDTO>) request.getAttribute("courses");
@@ -45,7 +72,7 @@
                             <td><%= courseDTO.getId()%></td>
                             <td><%= courseDTO.getName()%></td>
                             <td><%
-                            if (courseDTO.getStudentDTOs() != null && !courseDTO.getStudentDTOs().isEmpty()) {%>
+                                if (courseDTO.getStudentDTOs() != null && !courseDTO.getStudentDTOs().isEmpty()) {%>
                                 <span class="label label-success"><%= courseDTO.getStudentDTOs().size()%></span>
                                 <% } else { %>
                                 <span class="label label-default">0</span>
@@ -53,7 +80,7 @@
                                 %></td>
                             <td>
                                 <a class="btn btn-primary" href="/course/update?id=<%=courseDTO.getId()%>">Edit</a>
-                                <a class="btn btn-danger" href="/course/delete?id=<%=courseDTO.getId()%>">Delete</a>
+                                <a onclick="return confirm('Are you sure ?');" class="btn btn-danger" href="/course/delete?id=<%=courseDTO.getId()%>">Delete</a>
                             </td>
                         </tr>
                         <%
